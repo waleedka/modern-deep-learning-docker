@@ -103,6 +103,11 @@ RUN pip3 install --no-cache-dir python-dateutil --upgrade
 RUN apt-get install -y --no-install-recommends default-jdk
 
 #
+# Keras
+#
+RUN pip install keras
+
+#
 # Cleanup
 #
 RUN apt-get clean && \
