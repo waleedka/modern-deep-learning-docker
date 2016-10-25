@@ -39,9 +39,9 @@ RUN pip3 --no-cache-dir install \
 RUN pip3 --no-cache-dir install jupyter
 # Allow access from outside the container, and skip trying to open a browser.
 RUN mkdir /root/.jupyter
-RUN echo -e "c.NotebookApp.ip = '*'" \
-            "\nc.NotebookApp.open_browser = False" \
-            >> /root/.jupyter/jupyter_notebook_config.py
+RUN echo "c.NotebookApp.ip = '*'" \
+         "\nc.NotebookApp.open_browser = False" \
+         >> /root/.jupyter/jupyter_notebook_config.py
 EXPOSE 8888
 
 #
