@@ -9,7 +9,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -y --no-install-recommends apt-utils
 
 # Developer Essentials
-RUN apt-get install -y --no-install-recommends git curl vim
+RUN apt-get install -y --no-install-recommends git curl vim unzip openssh-client
 
 # Build tools
 RUN apt-get install -y --no-install-recommends build-essential cmake
@@ -45,10 +45,10 @@ RUN echo "c.NotebookApp.ip = '*'" \
 EXPOSE 8888
 
 #
-# Tensorflow 0.11 - CPU only
+# Tensorflow 0.12RC0 - CPU only
 #
 RUN pip3 install --no-cache-dir --upgrade \
-    https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.11.0-cp35-cp35m-linux_x86_64.whl
+    https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.12.0rc1-cp35-cp35m-linux_x86_64.whl
 
 # Expose port for TensorBoard
 EXPOSE 6006
