@@ -38,10 +38,12 @@ RUN pip3 --no-cache-dir install \
 #
 RUN pip3 --no-cache-dir install jupyter
 # Allow access from outside the container, and skip trying to open a browser.
+# NOTE: disable authentication token for convenience. DON'T DO THIS ON A PUBLIC SERVER.
 RUN mkdir /root/.jupyter
 RUN echo "c.NotebookApp.ip = '*'" \
          "\nc.NotebookApp.open_browser = False" \
-         >> /root/.jupyter/jupyter_notebook_config.py
+         "\nc.NotebookApp.token = ''" \
+         > /root/.jupyter/jupyter_notebook_config.py
 EXPOSE 8888
 
 #
