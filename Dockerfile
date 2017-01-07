@@ -63,9 +63,9 @@ RUN apt-get install -y --no-install-recommends \
     libjpeg8-dev libtiff5-dev libjasper-dev libpng12-dev \
     libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libgtk2.0-dev
 # Get source from github
-RUN git clone -b 3.1.0 --depth 1 https://github.com/Itseez/opencv.git /root/opencv
+RUN git clone -b 3.1.0 --depth 1 https://github.com/Itseez/opencv.git /usr/local/src/opencv
 # Compile
-RUN cd /root/opencv && mkdir build && cd build && \
+RUN cd /usr/local/src/opencv && mkdir build && cd build && \
     cmake -D CMAKE_INSTALL_PREFIX=/usr/local \
           -D BUILD_TESTS=OFF \
           -D BUILD_PERF_TESTS=OFF \
@@ -83,17 +83,17 @@ RUN apt-get install -y --no-install-recommends \
     libhdf5-serial-dev protobuf-compiler liblmdb-dev libgoogle-glog-dev
 RUN apt-get install -y --no-install-recommends libboost-all-dev
 # Get source. Use master branch because the latest stable release (rc3) misses critical fixes.
-RUN git clone -b master --depth 1 https://github.com/BVLC/caffe.git /root/caffe
+RUN git clone -b master --depth 1 https://github.com/BVLC/caffe.git /usr/local/src/caffe
 # Python dependencies
-RUN pip3 --no-cache-dir install -r /root/caffe/python/requirements.txt
+RUN pip3 --no-cache-dir install -r /usr/local/src/caffe/python/requirements.txt
 # Compile
-RUN cd /root/caffe && mkdir build && cd build && \
+RUN cd /usr/local/src/caffe && mkdir build && cd build && \
     cmake -D CPU_ONLY=ON -D python_version=3 -D BLAS=open -D USE_OPENCV=ON .. && \
     make -j"$(nproc)" all && \
     make install
 # Enivronment variables
-ENV PYTHONPATH=/root/caffe/python:$PYTHONPATH \
-	PATH=/root/caffe/build/tools:$PATH
+ENV PYTHONPATH=/usr/local/src/caffe/python:$PYTHONPATH \
+	PATH=/usr/local/src/caffe/build/tools:$PATH
 # Fix: old version of python-dateutil breaks caffe. Update it.
 RUN pip3 install --no-cache-dir python-dateutil --upgrade
 
