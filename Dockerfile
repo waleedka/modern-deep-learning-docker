@@ -9,7 +9,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -y --no-install-recommends apt-utils
 
 # Developer Essentials
-RUN apt-get install -y --no-install-recommends git curl vim unzip openssh-client
+RUN apt-get install -y --no-install-recommends git curl vim unzip openssh-client wget
 
 # Build tools
 RUN apt-get install -y --no-install-recommends build-essential cmake
