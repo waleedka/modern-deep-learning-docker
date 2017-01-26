@@ -56,14 +56,14 @@ RUN pip3 install --no-cache-dir --upgrade \
 EXPOSE 6006
 
 #
-# OpenCV 3.1
+# OpenCV 3.2
 #
 # Dependencies
 RUN apt-get install -y --no-install-recommends \
     libjpeg8-dev libtiff5-dev libjasper-dev libpng12-dev \
     libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libgtk2.0-dev
 # Get source from github
-RUN git clone -b 3.1.0 --depth 1 https://github.com/Itseez/opencv.git /usr/local/src/opencv
+RUN git clone -b 3.2.0 --depth 1 https://github.com/opencv/opencv.git /usr/local/src/opencv
 # Compile
 RUN cd /usr/local/src/opencv && mkdir build && cd build && \
     cmake -D CMAKE_INSTALL_PREFIX=/usr/local \
