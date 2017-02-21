@@ -61,7 +61,8 @@ EXPOSE 6006
 # Dependencies
 RUN apt-get install -y --no-install-recommends \
     libjpeg8-dev libtiff5-dev libjasper-dev libpng12-dev \
-    libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libgtk2.0-dev
+    libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libgtk2.0-dev \
+    liblapacke-dev checkinstall
 # Get source from github
 RUN git clone -b 3.2.0 --depth 1 https://github.com/opencv/opencv.git /usr/local/src/opencv
 # Compile
