@@ -8,12 +8,12 @@ Keep in mind that this image is big (3GB+). I considered dropping a few tools or
 ## Included Libraries
 - Ubuntu 16.04 LTS
 - Python 3.5.2
-- Tensorflow 1.0
+- Tensorflow 1.0.1
 - OpenCV 3.2
 - Jupyter Notebook
 - Numpy, Scipy, Scikit Learn, Scikit Image, Pandas, Matplotlib, Pillow
 - Caffe
-- Keras
+- Keras 2.0.3
 - Java JDK
 
 TODO:

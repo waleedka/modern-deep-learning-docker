@@ -47,7 +47,7 @@ RUN echo "c.NotebookApp.ip = '*'" \
 EXPOSE 8888
 
 #
-# Tensorflow 1.0 - CPU
+# Tensorflow 1.0.1 - CPU
 #
 RUN pip3 install --no-cache-dir --upgrade tensorflow 
 
@@ -108,7 +108,7 @@ RUN apt-get install -y --no-install-recommends default-jdk
 #
 # Keras
 #
-RUN pip install keras
+RUN pip3 install --no-cache-dir h5py keras
 
 #
 # Cleanup
