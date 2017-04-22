@@ -108,7 +108,7 @@ RUN apt-get install -y --no-install-recommends default-jdk
 #
 # Keras
 #
-RUN pip install keras
+RUN pip3 install --no-cache-dir h5py keras
 
 #
 # Cleanup

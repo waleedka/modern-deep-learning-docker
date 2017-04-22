@@ -13,7 +13,7 @@ Keep in mind that this image is big (3GB+). I considered dropping a few tools or
 - Jupyter Notebook
 - Numpy, Scipy, Scikit Learn, Scikit Image, Pandas, Matplotlib, Pillow
 - Caffe
-- Keras
+- Keras 2.0.3
 - Java JDK
 
 TODO:
