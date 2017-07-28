@@ -8,12 +8,12 @@ Keep in mind that this image is big (3GB+). I considered dropping a few tools or
 ## Included Libraries
 - Ubuntu 16.04 LTS
 - Python 3.5.2
-- Tensorflow 1.0
+- Tensorflow 1.2.1
 - OpenCV 3.2
 - Jupyter Notebook
 - Numpy, Scipy, Scikit Learn, Scikit Image, Pandas, Matplotlib, Pillow
 - Caffe
-- Keras 2.0.3
+- Keras 2.0.6
 - Java JDK
 
 TODO:
@@ -25,11 +25,10 @@ If you need to run older models that require Python 2.7 or OpenCV 2.4 then I'd r
 
 ## Runing the Docker Image
 
-If you haven't yet, start by installing [Docker](https://www.docker.com/). It should take a few minutes. Then run this command at your terminal:
+If you haven't yet, start by installing [Docker](https://www.docker.com/). Then run this command at your terminal and it will open a bash prompt inside the container.
 
 ```
 docker run -it -p 8888:8888 -p 6006:6006 -v ~/:/host waleedka/modern-deep-learning
 ```
 
 Note the *-v* option. It maps your user directory (~/) to /host in the container. Change it if needed. The two *-p* options expose the ports used by Jupyter Notebook and Tensorboard respectively.
-
