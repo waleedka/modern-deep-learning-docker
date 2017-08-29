@@ -31,7 +31,9 @@ RUN apt-get install -y --no-install-recommends libjpeg-dev zlib1g-dev
 RUN pip3 --no-cache-dir install Pillow
 # Common libraries
 RUN pip3 --no-cache-dir install \
-    numpy scipy sklearn scikit-image pandas matplotlib
+    numpy scipy sklearn scikit-image pandas matplotlib requests
+# Cython
+RUN pip3 --no-cache-dir install Cython
 
 #
 # Jupyter Notebook
@@ -108,7 +110,7 @@ RUN apt-get install -y --no-install-recommends default-jdk
 #
 # Keras 2.0.8
 #
-RUN pip3 install --no-cache-dir --upgrade h5py keras
+RUN pip3 install --no-cache-dir --upgrade h5py pydot_ng keras
 
 #
 # Cleanup
