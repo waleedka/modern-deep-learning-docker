@@ -32,3 +32,15 @@ docker run -it -p 8888:8888 -p 6006:6006 -v ~/:/host waleedka/modern-deep-learni
 ```
 
 Note the *-v* option. It maps your user directory (~/) to /host in the container. Change it if needed. The two *-p* options expose the ports used by Jupyter Notebook and Tensorboard respectively.
+
+## Runing Jupyter Notebook
+While inside the Docker container (see previous section) run this command:
+
+```bash
+cd /host    # So Jupyter Notebook uses this as it's root
+jupyter notebook --allow-root
+```
+
+Then, in your browser navigate to: http://localhost:8888/
+
+**Important:** Do **not** run this on a public server accessible from the Internet. Security features have been disabled in the settings for convenience of local development.
