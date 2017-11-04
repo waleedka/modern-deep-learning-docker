@@ -2,23 +2,24 @@
 
 This is a modern environment for building deep learning applications. It has the latest *stable* versions of the most common tools and frameworks that you're likely to need.
 
-Keep in mind that this image is big (3GB+). I considered dropping a few tools or creating different images with different toolsets, but I think that'll waste everyone's time. If you're doing deep learning then you probably have a lot of disk space anyway, and you're likely to prefer saving time over disk space.    
+Keep in mind that this image is big (3GB+). I considered dropping a few tools or creating different images with different toolsets, but I think that'll waste everyone's time. If you're doing deep learning then you probably have a lot of disk space anyway, and you're likely to prefer saving time over disk space.
 
 
 ## Included Libraries
 - Ubuntu 16.04 LTS
 - Python 3.5.2
 - Tensorflow 1.3.0
+- PyTorch 0.2
 - OpenCV 3.2
 - Jupyter Notebook
 - Numpy, Scipy, Scikit Learn, Scikit Image, Pandas, Matplotlib, Pillow
 - Caffe
 - Keras 2.0.8
 - Java JDK
+- PyCocoTools (MS COCO dev kit)
 
 TODO:
-- Torch
-- GPU/CUDA
+- GPU/CUDA (due to Docker hub time limits, auto builds fail to build this. Suggestions welcome)
 
 
 If you need to run older models that require Python 2.7 or OpenCV 2.4 then I'd recommend [Sai's docker image](https://github.com/saiprashanths/dl-docker) . I use it in addition to this image in my daily work.

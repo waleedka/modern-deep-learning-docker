@@ -114,6 +114,17 @@ RUN apt-get install -y --no-install-recommends default-jdk
 RUN pip3 install --no-cache-dir --upgrade h5py pydot_ng keras
 
 #
+# PyCocoTools
+#
+RUN pip3 install --no-cache-dir git+https://github.com/waleedka/coco.git#subdirectory=PythonAPI
+
+#
+# PyTorch 0.2
+#
+RUN pip3 install http://download.pytorch.org/whl/cu75/torch-0.2.0.post3-cp35-cp35m-manylinux1_x86_64.whl
+RUN pip3 install torchvision
+
+#
 # Cleanup
 #
 RUN apt-get clean && \
