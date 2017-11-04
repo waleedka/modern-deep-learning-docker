@@ -84,6 +84,7 @@ RUN apt-get install -y --no-install-recommends \
     cmake libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev \
     libhdf5-serial-dev protobuf-compiler liblmdb-dev libgoogle-glog-dev
 RUN apt-get install -y --no-install-recommends libboost-all-dev
+RUN pip3 install lmdb
 # Get source. Use master branch because the latest stable release (rc3) misses critical fixes.
 RUN git clone -b master --depth 1 https://github.com/BVLC/caffe.git /usr/local/src/caffe
 # Python dependencies
