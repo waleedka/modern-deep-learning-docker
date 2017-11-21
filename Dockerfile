@@ -49,7 +49,7 @@ RUN echo "c.NotebookApp.ip = '*'" \
 EXPOSE 8888
 
 #
-# Tensorflow 1.3.0 - CPU
+# Tensorflow 1.4.0 - CPU
 #
 RUN pip3 install --no-cache-dir --upgrade tensorflow 
 
@@ -109,13 +109,16 @@ RUN pip3 install --no-cache-dir python-dateutil --upgrade
 RUN apt-get install -y --no-install-recommends default-jdk
 
 #
-# Keras 2.0.8
+# Keras 2.1.1
 #
 RUN pip3 install --no-cache-dir --upgrade h5py pydot_ng keras
 
 #
 # PyCocoTools
 #
+# Using a fork of the original that has a fix for Python 3.
+# I submitted a PR to the original repo (https://github.com/cocodataset/cocoapi/pull/50)
+# but it doesn't seem to be active anymore.
 RUN pip3 install --no-cache-dir git+https://github.com/waleedka/coco.git#subdirectory=PythonAPI
 
 #
