@@ -22,7 +22,7 @@ RUN apt-get install -y --no-install-recommends libopenblas-dev
 #
 # For convenience, alisas (but don't sym-link) python & pip to python3 & pip3 as recommended in:
 # http://askubuntu.com/questions/351318/changing-symlink-python-to-python3-causes-problems
-RUN apt-get install -y --no-install-recommends python3.5 python3.5-dev python3-pip
+RUN apt-get install -y --no-install-recommends python3.5 python3.5-dev python3-pip python3-tk
 RUN pip3 install --no-cache-dir --upgrade pip setuptools
 RUN echo "alias python='python3'" >> /root/.bash_aliases
 RUN echo "alias pip='pip3'" >> /root/.bash_aliases
