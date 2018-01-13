@@ -49,7 +49,7 @@ RUN echo "c.NotebookApp.ip = '*'" \
 EXPOSE 8888
 
 #
-# Tensorflow 1.4.0 - CPU
+# Tensorflow 1.4.1 - CPU
 #
 RUN pip3 install --no-cache-dir --upgrade tensorflow 
 
@@ -109,7 +109,7 @@ RUN pip3 install --no-cache-dir python-dateutil --upgrade
 RUN apt-get install -y --no-install-recommends default-jdk
 
 #
-# Keras 2.1.1
+# Keras 2.1.2
 #
 RUN pip3 install --no-cache-dir --upgrade h5py pydot_ng keras
 
