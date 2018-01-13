@@ -9,7 +9,7 @@ Keep in mind that this image is big (3GB+). I considered dropping a few tools or
 - Ubuntu 16.04 LTS
 - Python 3.5.2
 - Tensorflow 1.4.0
-- PyTorch 0.2
+- PyTorch 0.3
 - OpenCV 3.2
 - Jupyter Notebook
 - Numpy, Scipy, Scikit Learn, Scikit Image, Pandas, Matplotlib, Pillow
