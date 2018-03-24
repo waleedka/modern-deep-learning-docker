@@ -1,48 +1,40 @@
 FROM ubuntu:16.04
 MAINTAINER Waleed Abdulla <waleed.abdulla@gmail.com>
 
-RUN apt-get update
-
 # Supress warnings about missing front-end. As recommended at:
 # http://stackoverflow.com/questions/22466255/is-it-possibe-to-answer-dialog-questions-when-installing-under-docker
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get install -y --no-install-recommends apt-utils
 
-# Developer Essentials
-RUN apt-get install -y --no-install-recommends git curl vim unzip openssh-client wget
-
-# Build tools
-RUN apt-get install -y --no-install-recommends build-essential cmake
-
-# OpenBLAS
-RUN apt-get install -y --no-install-recommends libopenblas-dev
+# Essentials: developer tools, build tools, OpenBLAS
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    apt-utils git curl vim unzip openssh-client wget \
+    build-essential cmake \
+    libopenblas-dev
 
 #
 # Python 3.5
 #
-# For convenience, alisas (but don't sym-link) python & pip to python3 & pip3 as recommended in:
+# For convenience, alias (but don't sym-link) python & pip to python3 & pip3 as recommended in:
 # http://askubuntu.com/questions/351318/changing-symlink-python-to-python3-causes-problems
-RUN apt-get install -y --no-install-recommends python3.5 python3.5-dev python3-pip python3-tk
-RUN pip3 install --no-cache-dir --upgrade pip setuptools
-RUN echo "alias python='python3'" >> /root/.bash_aliases
-RUN echo "alias pip='pip3'" >> /root/.bash_aliases
+RUN apt-get install -y --no-install-recommends python3.5 python3.5-dev python3-pip python3-tk && \
+    pip3 install --no-cache-dir --upgrade pip setuptools && \
+    echo "alias python='python3'" >> /root/.bash_aliases && \
+    echo "alias pip='pip3'" >> /root/.bash_aliases
 # Pillow and it's dependencies
-RUN apt-get install -y --no-install-recommends libjpeg-dev zlib1g-dev
-RUN pip3 --no-cache-dir install Pillow
-# Common libraries
+RUN apt-get install -y --no-install-recommends libjpeg-dev zlib1g-dev && \
+    pip3 --no-cache-dir install Pillow
+# Science libraries and other common packages
 RUN pip3 --no-cache-dir install \
-    numpy scipy sklearn scikit-image pandas matplotlib requests
-# Cython
-RUN pip3 --no-cache-dir install Cython
+    numpy scipy sklearn scikit-image pandas matplotlib Cython requests
 
 #
 # Jupyter Notebook
 #
-RUN pip3 --no-cache-dir install jupyter
 # Allow access from outside the container, and skip trying to open a browser.
 # NOTE: disable authentication token for convenience. DON'T DO THIS ON A PUBLIC SERVER.
-RUN mkdir /root/.jupyter
-RUN echo "c.NotebookApp.ip = '*'" \
+RUN pip3 --no-cache-dir install jupyter && \
+    mkdir /root/.jupyter && \
+    echo "c.NotebookApp.ip = '*'" \
          "\nc.NotebookApp.open_browser = False" \
          "\nc.NotebookApp.token = ''" \
          > /root/.jupyter/jupyter_notebook_config.py
@@ -82,9 +74,9 @@ RUN cd /usr/local/src/opencv && mkdir build && cd build && \
 # Dependencies
 RUN apt-get install -y --no-install-recommends \
     cmake libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev \
-    libhdf5-serial-dev protobuf-compiler liblmdb-dev libgoogle-glog-dev
-RUN apt-get install -y --no-install-recommends libboost-all-dev
-RUN pip3 install lmdb
+    libhdf5-serial-dev protobuf-compiler liblmdb-dev libgoogle-glog-dev \
+    libboost-all-dev && \
+    pip3 install lmdb
 # Get source. Use master branch because the latest stable release (rc3) misses critical fixes.
 RUN git clone -b master --depth 1 https://github.com/BVLC/caffe.git /usr/local/src/caffe
 # Python dependencies
@@ -114,24 +106,18 @@ RUN apt-get install -y --no-install-recommends default-jdk
 RUN pip3 install --no-cache-dir --upgrade h5py pydot_ng keras
 
 #
+# PyTorch 0.3.1
+#
+RUN pip3 install http://download.pytorch.org/whl/cpu/torch-0.3.1-cp35-cp35m-linux_x86_64.whl && \
+    pip3 install torchvision
+
+#
 # PyCocoTools
 #
 # Using a fork of the original that has a fix for Python 3.
 # I submitted a PR to the original repo (https://github.com/cocodataset/cocoapi/pull/50)
 # but it doesn't seem to be active anymore.
 RUN pip3 install --no-cache-dir git+https://github.com/waleedka/coco.git#subdirectory=PythonAPI
-
-#
-# PyTorch 0.3.1
-#
-RUN pip3 install http://download.pytorch.org/whl/cpu/torch-0.3.1-cp35-cp35m-linux_x86_64.whl 
-RUN pip3 install torchvision
-
-#
-# Cleanup
-#
-RUN apt-get clean && \
-    apt-get autoremove
 
 WORKDIR "/root"
 CMD ["/bin/bash"]
