@@ -38,21 +38,15 @@ Note the *-v* option. It maps your user directory (~/) to /host in the container
 
 **Important:** Do **not** run this on a public server accessible from the Internet. Security features have been disabled in the settings for convenience of local development.
 
-Start a Jupyter Notebook with one command:
-
-```bash
-docker run -it -p 8888:8888 -p 6006:6006 -v ~/:/root waleedka/modern-deep-learning jupyter notebook --ip=0.0.0.0 --allow-root --no-browser
-```
-
-This will use your user directory (~/) as `/root` directory in the container (where the notebook runs).
-
-Then, in your browser navigate to: http://localhost:8888/
-
-Another option is to start a command line and run a Jupyter notebook from there. While inside the Docker container (see previous section) run this command:
+While inside the Docker container (see previous section) run this command, then navigate to: http://localhost:8888/
 
 ```bash
 cd /host    # So Jupyter Notebook uses this as it's root
 jupyter notebook --allow-root
 ```
 
-Then, in your browser navigate to: http://localhost:8888/
+Alternatively, combine the previous two steps and start Jupyter Notebook without logging into the container:
+
+```bash
+docker run -it -p 8888:8888 -p 6006:6006 -v ~/:/host waleedka/modern-deep-learning jupyter notebook --allow-root /host
+```
