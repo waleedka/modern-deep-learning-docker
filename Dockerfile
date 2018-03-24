@@ -49,7 +49,7 @@ RUN echo "c.NotebookApp.ip = '*'" \
 EXPOSE 8888
 
 #
-# Tensorflow 1.4.1 - CPU
+# Tensorflow 1.6.0 - CPU
 #
 RUN pip3 install --no-cache-dir --upgrade tensorflow 
 
@@ -109,7 +109,7 @@ RUN pip3 install --no-cache-dir python-dateutil --upgrade
 RUN apt-get install -y --no-install-recommends default-jdk
 
 #
-# Keras 2.1.2
+# Keras 2.1.5
 #
 RUN pip3 install --no-cache-dir --upgrade h5py pydot_ng keras
 
@@ -122,9 +122,9 @@ RUN pip3 install --no-cache-dir --upgrade h5py pydot_ng keras
 RUN pip3 install --no-cache-dir git+https://github.com/waleedka/coco.git#subdirectory=PythonAPI
 
 #
-# PyTorch 0.2
+# PyTorch 0.3.1
 #
-RUN pip3 install http://download.pytorch.org/whl/cpu/torch-0.3.0.post4-cp35-cp35m-linux_x86_64.whl 
+RUN pip3 install http://download.pytorch.org/whl/cpu/torch-0.3.1-cp35-cp35m-linux_x86_64.whl 
 RUN pip3 install torchvision
 
 #

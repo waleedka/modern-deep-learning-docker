@@ -8,13 +8,13 @@ Keep in mind that this image is big (3GB+). I considered dropping a few tools or
 ## Included Libraries
 - Ubuntu 16.04 LTS
 - Python 3.5.2
-- Tensorflow 1.4.1
-- PyTorch 0.3
+- Tensorflow 1.6.0
+- Keras 2.1.5
+- PyTorch 0.3.1
 - OpenCV 3.2
 - Jupyter Notebook
 - Numpy, Scipy, Scikit Learn, Scikit Image, Pandas, Matplotlib, Pillow
 - Caffe
-- Keras 2.1.2
 - Java JDK
 - PyCocoTools (MS COCO dev kit)
 
@@ -22,7 +22,7 @@ TODO:
 - GPU/CUDA (due to Docker hub time limits, auto builds fail to build this. Suggestions welcome)
 
 
-If you need to run older models that require Python 2.7 or OpenCV 2.4 then I'd recommend [Sai's docker image](https://github.com/saiprashanths/dl-docker) . I use it in addition to this image in my daily work.
+If you need to run older models that require Python 2.7 or OpenCV 2.4 then I'd recommend [Sai's docker image](https://github.com/saiprashanths/dl-docker).
 
 ## Runing the Docker Image
 
@@ -50,3 +50,6 @@ Alternatively, combine the previous two steps and start Jupyter Notebook without
 ```bash
 docker run -it -p 8888:8888 -p 6006:6006 -v ~/:/host waleedka/modern-deep-learning jupyter notebook --allow-root /host
 ```
+
+## Issues/Suggestions
+Submit issues and pull requests in the [GitHub repo](https://github.com/waleedka/modern-deep-learning-docker).
