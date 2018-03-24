@@ -11,7 +11,7 @@ Keep in mind that this image is big (3GB+). I considered dropping a few tools or
 - Tensorflow 1.6.0
 - Keras 2.1.5
 - PyTorch 0.3.1
-- OpenCV 3.2
+- OpenCV 3.4.1
 - Jupyter Notebook
 - Numpy, Scipy, Scikit Learn, Scikit Image, Pandas, Matplotlib, Pillow
 - Caffe
