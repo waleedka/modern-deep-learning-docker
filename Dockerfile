@@ -94,8 +94,6 @@ ENV OPENCV_VERSION="3.4.1"
 RUN wget https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip \
 && unzip ${OPENCV_VERSION}.zip 
 
-# PASSED HERE
-
 # RUN mkdir /opencv-${OPENCV_VERSION}/cmake_binary \
 # && cd /opencv-${OPENCV_VERSION}/cmake_binary \
 # && cmake -j6 2>/dev/null -DBUILD_TIFF=ON \
@@ -136,11 +134,18 @@ RUN git clone -b master https://github.com/TagineerDai/caffe.git /usr/local/src/
 # Python dependencies
 RUN pip3 --no-cache-dir install lmdb
 RUN pip3 --no-cache-dir install -r /usr/local/src/caffe/python/requirements.txt
+
 # Compile
 # ERROR REF https://blog.csdn.net/w5688414/article/details/78563398
+RUN apt-get install python-numpy -y 
+
 RUN cd /usr/local/src/caffe && \
-    make -j"$(nproc)" all && \
-    make -j"$(nproc)" test && \
+    make -j"$(nproc)" all
+ 
+RUN cd /usr/local/src/caffe && \
+    make -j"$(nproc)" test
+
+RUN cd /usr/local/src/caffe && \
     make -j"$(nproc)" pycaffe && \
     make runtest
 
@@ -160,13 +165,16 @@ RUN pip3 install --no-cache-dir --upgrade h5py pydot_ng keras
 #
 # PyTorch 0.4.0
 #
-RUN pip3 install --no-cache-dir --upgrade torch, torchvision
+RUN pip3 install --no-cache-dir --upgrade torch torchvision
 
 #
 # MXNet 1.2.0
 #
 RUN pip3 install --no-cache-dir --upgrade mxnet-cu90 --pre
 
+RUN pip3 uninstall python-dateutil -y 
+RUN pip3 install --upgrade python-dateutil
+ 
 # Environment variables
 ENV PYTHONPATH=/usr/local/src/caffe/python:$PYTHONPATH \
 	PATH=/usr/local/src/caffe/build/tools:$PATH
