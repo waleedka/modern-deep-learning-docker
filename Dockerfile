@@ -137,6 +137,7 @@ RUN git clone -b master https://github.com/TagineerDai/caffe.git /usr/local/src/
 RUN pip3 --no-cache-dir install lmdb
 RUN pip3 --no-cache-dir install -r /usr/local/src/caffe/python/requirements.txt
 # Compile
+# ERROR REF https://blog.csdn.net/w5688414/article/details/78563398
 RUN cd /usr/local/src/caffe && \
     make -j"$(nproc)" all && \
     make -j"$(nproc)" test && \
