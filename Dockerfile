@@ -1,5 +1,16 @@
-FROM nvidia/cuda:9.0-devel-ubuntu16.04
+FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
+# FROM nvidia/cuda:9.0-devel-ubuntu16.04
+
 LABEL maintainer='Yaxuan Dai <daiyaxuan2018@outlook.com>'
+
+# cudnn provided, run ./run.sh firstly.
+# RUN cd /root && mkdir Setup
+# COPY cudnn.deb /root/Setup/
+# COPY cudnn_patch1.deb /root/Setup/
+# COPY cudnn_patch2.deb /root/Setup/
+# RUN dpkg -i /root/Setup/cudnn.deb && dpkg -i /root/Setup/cudnn_patch1.deb && dpkg -i /root/Setup/cudnn_patch2.deb 
+# ENV LD_LIBRARY_PATH="/usr/local/cuda-9.0/lib64:$LD_LIBRARY_PATH"
+
 
 # Essentials: developer tools, build tools, OpenBLAS
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -53,16 +64,64 @@ RUN apt-get install -y --no-install-recommends \
     libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libgtk2.0-dev \
     liblapacke-dev checkinstall
 # Get source from github
-RUN git clone -b 3.4.1 --depth 1 https://github.com/opencv/opencv.git /usr/local/src/opencv
+# RUN git clone -b 3.4.1 --depth 1 https://github.com/opencv/opencv.git /usr/local/src/opencv
 # Compile
-RUN cd /usr/local/src/opencv && mkdir build && cd build && \
-    cmake -D CMAKE_INSTALL_PREFIX=/usr/local \
-          -D BUILD_TESTS=OFF \
-          -D BUILD_PERF_TESTS=OFF \
-          -D PYTHON_DEFAULT_EXECUTABLE=$(which python3) \
-          .. && \
-    make -j"$(nproc)" && \
-    make install
+# RUN cd /usr/local/src/opencv && mkdir build && cd build && \
+#     cmake -D CMAKE_INSTALL_PREFIX=/usr/local \
+#           -D BUILD_TESTS=OFF \
+#           -D BUILD_PERF_TESTS=OFF \
+#           -D PYTHON_DEFAULT_EXECUTABLE=$(which python3) \
+#           .. && \
+#     make -j6 2>/dev/null && \
+#     make -j6 install 2>/dev/null
+
+RUN apt-get update && \
+        apt-get install -y \
+        yasm \
+        pkg-config \
+        libswscale-dev \
+        libtbb2 \
+        libtbb-dev \
+        libtiff-dev \
+        libjasper-dev \
+        libavformat-dev \
+        libpq-dev
+
+WORKDIR /
+
+ENV OPENCV_VERSION="3.4.1"
+
+RUN wget https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip \
+&& unzip ${OPENCV_VERSION}.zip 
+
+# PASSED HERE
+
+# RUN mkdir /opencv-${OPENCV_VERSION}/cmake_binary \
+# && cd /opencv-${OPENCV_VERSION}/cmake_binary \
+# && cmake -j6 2>/dev/null -DBUILD_TIFF=ON \
+#   -DBUILD_opencv_java=ON \
+#   -DWITH_CUDA=ON\
+#   -DENABLE_AVX=ON \
+#   -DWITH_OPENGL=ON \
+#   -DWITH_OPENCL=ON \
+#   -DWITH_IPP=ON \
+#   -DWITH_TBB=ON \
+#   -DWITH_EIGEN=ON \
+#   -DWITH_V4L=ON \
+#   -DBUILD_TESTS=OFF \
+#   -DBUILD_PERF_TESTS=OFF \
+#   -DCMAKE_BUILD_TYPE=RELEASE \
+#   -DCMAKE_INSTALL_PREFIX=$(python3 -c "import sys; print(sys.prefix)") \
+#   -DPYTHON_EXECUTABLE=$(which python3) \
+#   -DPYTHON_INCLUDE_DIR=$(python3 -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())") \
+#   -DPYTHON_PACKAGES_PATH=$(python3 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())") .. \
+# && make -j6 2>/dev/null install \
+# RUN  rm /${OPENCV_VERSION}.zip \
+# && rm -r /opencv-${OPENCV_VERSION}
+
+# When installing opencv/version
+# Set runtime path of "/usr/bin/opencv_version" to "/usr/lib/x86_64-linux-gnu:/usr/local/cuda/lib64"
+# returned with nonzero value: 2
 
 #
 # Caffe
@@ -79,9 +138,9 @@ RUN pip3 --no-cache-dir install lmdb
 RUN pip3 --no-cache-dir install -r /usr/local/src/caffe/python/requirements.txt
 # Compile
 RUN cd /usr/local/src/caffe && \
-    make -j$(nproc) all && \
-    make -j$(nproc) test && \
-    make -j$(nproc) pycaffe && \
+    make -j"$(nproc)" all && \
+    make -j"$(nproc)" test && \
+    make -j"$(nproc)" pycaffe && \
     make runtest
 
 #
