@@ -1,9 +1,5 @@
-FROM ubuntu:16.04
-MAINTAINER Waleed Abdulla <waleed.abdulla@gmail.com>
-
-# Supress warnings about missing front-end. As recommended at:
-# http://stackoverflow.com/questions/22466255/is-it-possibe-to-answer-dialog-questions-when-installing-under-docker
-ARG DEBIAN_FRONTEND=noninteractive
+FROM nvidia/cuda:9.0-devel-ubuntu16.04
+LABEL maintainer='Yaxuan Dai <daiyaxuan2018@outlook.com>'
 
 # Essentials: developer tools, build tools, OpenBLAS
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -28,6 +24,14 @@ RUN pip3 --no-cache-dir install \
     numpy scipy sklearn scikit-image pandas matplotlib Cython requests
 
 #
+# Java
+#
+# Install JDK (Java Development Kit), which includes JRE (Java Runtime
+# Environment). Or, if you just want to run Java apps, you can install
+# JRE only using: apt install default-jre
+RUN apt-get install -y --no-install-recommends default-jdk
+
+#
 # Jupyter Notebook
 #
 # Allow access from outside the container, and skip trying to open a browser.
@@ -39,14 +43,6 @@ RUN pip3 --no-cache-dir install jupyter && \
          "\nc.NotebookApp.token = ''" \
          > /root/.jupyter/jupyter_notebook_config.py
 EXPOSE 8888
-
-#
-# Tensorflow 1.6.0 - CPU
-#
-RUN pip3 install --no-cache-dir --upgrade tensorflow 
-
-# Expose port for TensorBoard
-EXPOSE 6006
 
 #
 # OpenCV 3.4.1
@@ -73,51 +69,47 @@ RUN cd /usr/local/src/opencv && mkdir build && cd build && \
 #
 # Dependencies
 RUN apt-get install -y --no-install-recommends \
-    cmake libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev \
     libhdf5-serial-dev protobuf-compiler liblmdb-dev libgoogle-glog-dev \
-    libboost-all-dev && \
-    pip3 install lmdb
-# Get source. Use master branch because the latest stable release (rc3) misses critical fixes.
-RUN git clone -b master --depth 1 https://github.com/BVLC/caffe.git /usr/local/src/caffe
+    libboost-all-dev liblapack-dev libatlas-base-dev libgflags-dev \
+    libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev 
+# Get source. Use master branch with edited config file.
+RUN git clone -b master https://github.com/TagineerDai/caffe.git /usr/local/src/caffe
 # Python dependencies
+RUN pip3 --no-cache-dir install lmdb
 RUN pip3 --no-cache-dir install -r /usr/local/src/caffe/python/requirements.txt
 # Compile
-RUN cd /usr/local/src/caffe && mkdir build && cd build && \
-    cmake -D CPU_ONLY=ON -D python_version=3 -D BLAS=open -D USE_OPENCV=ON .. && \
-    make -j"$(nproc)" all && \
-    make install
-# Enivronment variables
-ENV PYTHONPATH=/usr/local/src/caffe/python:$PYTHONPATH \
-	PATH=/usr/local/src/caffe/build/tools:$PATH
-# Fix: old version of python-dateutil breaks caffe. Update it.
-RUN pip3 install --no-cache-dir python-dateutil --upgrade
+RUN cd /usr/local/src/caffe && \
+    make -j$(nproc) all && \
+    make -j$(nproc) test && \
+    make -j$(nproc) pycaffe && \
+    make runtest
 
 #
-# Java
+# Tensorflow 1.6.0
 #
-# Install JDK (Java Development Kit), which includes JRE (Java Runtime
-# Environment). Or, if you just want to run Java apps, you can install
-# JRE only using: apt install default-jre
-RUN apt-get install -y --no-install-recommends default-jdk
+RUN pip3 install --no-cache-dir --upgrade tensorflow-gpu
+
+# Expose port for TensorBoard
+EXPOSE 6006
 
 #
-# Keras 2.1.5
+# Keras 2.2.0
 #
 RUN pip3 install --no-cache-dir --upgrade h5py pydot_ng keras
 
 #
-# PyTorch 0.3.1
+# PyTorch 0.4.0
 #
-RUN pip3 install http://download.pytorch.org/whl/cpu/torch-0.3.1-cp35-cp35m-linux_x86_64.whl && \
-    pip3 install torchvision
+RUN pip3 install --no-cache-dir --upgrade torch, torchvision
 
 #
-# PyCocoTools
+# MXNet 1.2.0
 #
-# Using a fork of the original that has a fix for Python 3.
-# I submitted a PR to the original repo (https://github.com/cocodataset/cocoapi/pull/50)
-# but it doesn't seem to be active anymore.
-RUN pip3 install --no-cache-dir git+https://github.com/waleedka/coco.git#subdirectory=PythonAPI
+RUN pip3 install --no-cache-dir --upgrade mxnet-cu90 --pre
+
+# Environment variables
+ENV PYTHONPATH=/usr/local/src/caffe/python:$PYTHONPATH \
+	PATH=/usr/local/src/caffe/build/tools:$PATH
 
 WORKDIR "/root"
 CMD ["/bin/bash"]
