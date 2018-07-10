@@ -24,7 +24,7 @@ TODO:
 
 If you need to run older models that require Python 2.7 or OpenCV 2.4 then I'd recommend [Sai's docker image](https://github.com/saiprashanths/dl-docker).
 
-## Runing the Docker Image
+## Running the Docker Image
 
 If you haven't yet, start by installing [Docker](https://www.docker.com/). Then run this command at your terminal and it will open a bash prompt inside the container.
 
