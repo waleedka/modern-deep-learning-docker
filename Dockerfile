@@ -25,7 +25,7 @@ RUN apt-get install -y --no-install-recommends libjpeg-dev zlib1g-dev && \
     pip3 --no-cache-dir install Pillow
 # Science libraries and other common packages
 RUN pip3 --no-cache-dir install \
-    numpy scipy sklearn scikit-image pandas matplotlib Cython requests
+    numpy scipy sklearn scikit-image pandas matplotlib Cython requests imgaug
 
 #
 # Jupyter Notebook
